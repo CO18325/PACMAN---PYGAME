@@ -13,6 +13,15 @@ class App:
         self.clock = pygame.time.Clock()
         self.running = True
         self.state = 'start'
+
+        # CONSIERING 28 PART HORIZONTALLY OF THE SCREEN
+        self.cell_width = WIDTH//28
+        # CONSIERING 30 PART VERTICALLY OF THE SCREEN
+        self.cell_height = HEIGHT//30
+        
+        # TO LOAD ALL THE IMAGES BEFORE STARTING THE GAME
+        # OTHERWISE THE IMAGES WILL LOAD FRAME BY FRAME
+        self.load()
     
     def run(self):
         while self.running:
@@ -52,6 +61,29 @@ class App:
 
         # FUNCTION TO DISPLAY ON THE SCREEN 
         screen.blit(text, pos)
+
+    def load(self):
+        # SET THE BACKGROUND IMAGE TO THE MAZE 
+        self.background = pygame.image.load('maze.png')
+        # SCALE THE BACKGROUND TO THE WIDTH AND HEIGHT OF THE SCREEN WINDOW
+        self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
+
+
+    def draw_grid(self):
+        # CONSIDERING THE SCREEN IS DIVIDED INTO 28 PARTS HORIZONTALLY
+        for x in range(WIDTH//self.cell_width):
+            # FUNCTION TO DRAW A LINE
+            # ARGS : SCREEN, COLOR OF LINE, STARTING AND ENDPOINTS
+            pygame.draw.line(self.screen, GREY, (x*self.cell_width,0), (x*self.cell_width, HEIGHT) )
+
+        # CONSIDERING THE SCREEN IS DIVIDED INTO 30 PARTS VERTICALLY
+        for x in range(HEIGHT//self.cell_height):
+            # FUNCTION TO DRAW A LINE
+            # ARGS : SCREEN, COLOR OF LINE, STARTING AND ENDPOINTS
+            pygame.draw.line(self.screen, GREY, (0, x * self.cell_height), (WIDTH,x*self.cell_height) )
+
+        # SO THIS MADE OUR MAZE DIVIDED INTO A 28 X 30 MATRIX
+        # CONSISTING OF WALLS AND OPEN PATH.
 
 
 ############################## INTRO FUNCTIONS ##########################
@@ -100,7 +132,11 @@ class App:
 
     def playing_draw(self):
 
-        # SET SCREEN COLOR TO BLACK
-        self.screen.fill(RED)
+        # REPRESENT PLAYING ARENA SCREEN WITH THE MAZE IMAGE AT BACKGROUND
+        # WE STARTED THE BAKGROUND FROM (0,0) PIXEL
+        self.screen.blit(self.background, (0,0))
 
+        # FUNCTION TO SHOW GRID LINES ON THE MAZE
+        # TO UNDERSTAND HOW THE PACMAN WILL MOVE
+        self.draw_grid()
         pygame.display.update()
