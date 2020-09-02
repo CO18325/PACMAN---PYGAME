@@ -15,9 +15,9 @@ class App:
         self.state = 'start'
 
         # CONSIERING 28 PART HORIZONTALLY OF THE SCREEN
-        self.cell_width = WIDTH//28
+        self.cell_width = MAZE_WIDTH//28
         # CONSIERING 30 PART VERTICALLY OF THE SCREEN
-        self.cell_height = HEIGHT//30
+        self.cell_height = MAZE_HEIGHT//30
         
         # TO LOAD ALL THE IMAGES BEFORE STARTING THE GAME
         # OTHERWISE THE IMAGES WILL LOAD FRAME BY FRAME
@@ -66,7 +66,7 @@ class App:
         # SET THE BACKGROUND IMAGE TO THE MAZE 
         self.background = pygame.image.load('maze.png')
         # SCALE THE BACKGROUND TO THE WIDTH AND HEIGHT OF THE SCREEN WINDOW
-        self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
+        self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
 
 
     def draw_grid(self):
@@ -74,13 +74,15 @@ class App:
         for x in range(WIDTH//self.cell_width):
             # FUNCTION TO DRAW A LINE
             # ARGS : SCREEN, COLOR OF LINE, STARTING AND ENDPOINTS
-            pygame.draw.line(self.screen, GREY, (x*self.cell_width,0), (x*self.cell_width, HEIGHT) )
+            # HERE SCREEN REFERS TO THE MAZE BACKGROUND
+            pygame.draw.line(self.background, GREY, (x*self.cell_width,0), (x*self.cell_width, HEIGHT) )
 
         # CONSIDERING THE SCREEN IS DIVIDED INTO 30 PARTS VERTICALLY
         for x in range(HEIGHT//self.cell_height):
             # FUNCTION TO DRAW A LINE
             # ARGS : SCREEN, COLOR OF LINE, STARTING AND ENDPOINTS
-            pygame.draw.line(self.screen, GREY, (0, x * self.cell_height), (WIDTH,x*self.cell_height) )
+            # HERE SCREEN REFERS TO THE MAZE BACKGROUND
+            pygame.draw.line(self.background, GREY, (0, x * self.cell_height), (WIDTH,x*self.cell_height) )
 
         # SO THIS MADE OUR MAZE DIVIDED INTO A 28 X 30 MATRIX
         # CONSISTING OF WALLS AND OPEN PATH.
@@ -131,12 +133,22 @@ class App:
         pass
 
     def playing_draw(self):
-
+        # NEED T0 FILL THE SCREEN WITH BLACK
+        # SO THAT PREVIOUS WINDOW CONTENT IS FLUSHED OUT
+        self.screen.fill(BLACK)
         # REPRESENT PLAYING ARENA SCREEN WITH THE MAZE IMAGE AT BACKGROUND
-        # WE STARTED THE BAKGROUND FROM (0,0) PIXEL
-        self.screen.blit(self.background, (0,0))
+        # WE STARTED THE BAKGROUND FROM (TOP_BOTTOM_BUFFER//2,TOP_BOTTOM_BUFFER//2) PIXEL
+        # TO CENTER THE MAZE IMAGE IN THE GAME WINDOW
+        self.screen.blit(self.background, (TOP_BOTTOM_BUFFER//2, TOP_BOTTOM_BUFFER//2))
 
         # FUNCTION TO SHOW GRID LINES ON THE MAZE
         # TO UNDERSTAND HOW THE PACMAN WILL MOVE
         self.draw_grid()
+
+        # TO SHOW THE HIGH SCORE IN THE GAME PLAYING AREA
+        self.draw_text('HIGH SCORE : 000', self.screen, [30,5], 18, WHITE, START_FONT, centered=False)
+
+        # TO SHOW THE CURRENT SCORE IN THE GAME PLAYING AREA
+        self.draw_text('CURRENT SCORE : 000', self.screen, [420,5], 18, WHITE, START_FONT, centered=False)
+
         pygame.display.update()
