@@ -1,5 +1,6 @@
 import pygame
 from setting import *
+from player_class import *
 import sys
 
 pygame.init()
@@ -18,6 +19,11 @@ class App:
         self.cell_width = MAZE_WIDTH//28
         # CONSIERING 30 PART VERTICALLY OF THE SCREEN
         self.cell_height = MAZE_HEIGHT//30
+
+        # INITIALIZE THE PLAYER(PACMAN)
+        # ARGS : STARTING COORDINATES
+        # PASS THE APP ITSELF
+        self.player = Player(self, PLAYER_START_POSITION)
         
         # TO LOAD ALL THE IMAGES BEFORE STARTING THE GAME
         # OTHERWISE THE IMAGES WILL LOAD FRAME BY FRAME
@@ -117,6 +123,7 @@ class App:
         self.draw_text('PUSH SPACEBAR', self.screen,[WIDTH//2,HEIGHT//2 - 50], START_TEXT_SIZE, ORANGE, START_FONT,centered = True)
         self.draw_text('1 PLAYER ONLY', self.screen,[WIDTH//2,HEIGHT//2 + 50], START_TEXT_SIZE, WHITE, START_FONT, centered = True)
         self.draw_text('CAPIP INNOVATIONS', self.screen,[WIDTH//2,HEIGHT//2 + 100], START_TEXT_SIZE, SKYBLUE, START_FONT, centered = True)
+        
         pygame.display.update()
 
 
@@ -151,4 +158,6 @@ class App:
         # TO SHOW THE CURRENT SCORE IN THE GAME PLAYING AREA
         self.draw_text('CURRENT SCORE : 000', self.screen, [420,5], 18, WHITE, START_FONT, centered=False)
 
+        # CONSTRUCT PLAYER ON THE MAZE SCREEN
+        self.player.draw()
         pygame.display.update()
