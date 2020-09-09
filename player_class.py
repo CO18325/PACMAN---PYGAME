@@ -3,6 +3,14 @@ from setting import *
 
 vec = pygame.math.Vector2 
 
+
+'''
+    IMPORTANT NOTE:
+        // : MEANS TO RETRIVE THE QUOTIENT
+        EXAMPLE : 
+            10 // 3 = 3
+'''
+
 # PLAYER CLASS TO DEFINE GAME PACMAN
 class Player:
     def __init__(self, app, pos):
@@ -16,11 +24,30 @@ class Player:
         # IT WILL BE USED FOR KEEPING THE PAC
         # INSIDE THE CENTER OF THE GRID MATRIX
         self.stored_direction = None
-        # print(self.grid_pos, self.pix_pos)
+
+        # TO CHECK IF THERE IS A WALL IN THE DIRECCTION OF MOVEMENT
+        # IT WILL BE INTIALLY TRUE
+        self.able_to_move = True
+
+
+
+    # METHOD TO GET THE EXACT CELL BLOCK POSITION IN THE GRID MATRIX
+    def get_pix_pos(self):
+        return vec(
+                (self.grid_pos.x * self.app.cell_width) + TOP_BOTTOM_BUFFER//2 + self.app.cell_width//2 , 
+                (self.grid_pos.y * self.app.cell_height) + TOP_BOTTOM_BUFFER//2 + self.app.cell_height//2
+            )        
+
 
 
     def update(self):
-        self.pix_pos += self.direction 
+
+        # IF NO WALL AHEAD
+        # UPDATE PACMAN POSITION
+        if self.able_to_move :
+            # UPDATING THE POSITION OF THE PAC 
+            # ACCORDING TO THE DIRECTION GIVEN
+            self.pix_pos += self.direction 
 
 
         # LOGIC FOR HOLDING THE PAC INTO THE CENTER OF A CELL BLOCK
@@ -30,12 +57,18 @@ class Player:
             if self.direction == vec(1,0) or self.direction == vec(-1,0):
                 if self.stored_direction != None:
                     self.direction = self.stored_direction
-
+                
+                # CHECK IF THERE IS ANY WALL IN THE NEXT MOVE
+                self.able_to_move = self.can_move()
         if int(self.pix_pos.y + TOP_BOTTOM_BUFFER//2) % self.app.cell_height == 0:
             # print("X IS IN LINE") 
             if self.direction == vec(0,1) or self.direction == vec(0,-1):
                 if self.stored_direction != None:
                     self.direction = self.stored_direction
+
+                # CHECK IF THERE IS ANY WALL IN THE NEXT MOVE
+                self.able_to_move = self.can_move()
+                
 
 
 
@@ -60,6 +93,8 @@ class Player:
             self.app.cell_width, self.app.cell_height
         ), 1)
 
+
+    # FUNCTION TO STORE THE DIRECTION GIVEN 
     def move(self, direction):
         #self.direction = direction
         # ABOVE LINE REPLACED BY :
@@ -67,11 +102,18 @@ class Player:
         self.stored_direction = direction
 
 
-    def get_pix_pos(self):
-        return vec(
-                (self.grid_pos.x * self.app.cell_width) + TOP_BOTTOM_BUFFER//2 + self.app.cell_width//2 , 
-                (self.grid_pos.y * self.app.cell_height) + TOP_BOTTOM_BUFFER//2 + self.app.cell_height//2
-            )        
+    # METHOD TO CHECK IF THERE IS A WALL AHEAD OF PACMAN
+    def can_move(self):
+        # WE WILL CHECK FOR EACH WALL IN THE DEFINED WALL LIST
+        for wall in self.app.walls:
+            # IF GRID POSITION + DIRECTION IS EQUAL TO ANY WALL 
+            # THEN WE RETURN FALSE
+            if vec(self.grid_pos + self.direction) == wall:
+                return False
+        # IF NO WALL IS FOUND THEN WE RETURN TRUE
+        # INDICATING THE DIRECTION IS VALID
+        return True
+
     
        
 

@@ -25,6 +25,10 @@ class App:
         # PASS THE APP ITSELF
         self.player = Player(self, PLAYER_START_POSITION)
         
+        # INTIALIZING THE WALL ARRAY
+        self.walls = []
+
+
         # TO LOAD ALL THE IMAGES BEFORE STARTING THE GAME
         # OTHERWISE THE IMAGES WILL LOAD FRAME BY FRAME
         self.load()
@@ -74,9 +78,20 @@ class App:
         # SCALE THE BACKGROUND TO THE WIDTH AND HEIGHT OF THE SCREEN WINDOW
         self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
 
+        # LOAD THE WALL MATRIX TEXT FILE
+        # CREATING THE WALL LIST
+        with open("walls.txt", 'r') as file:
+            for y_index, line in enumerate(file):
+                for x_index, char in enumerate(line):
+                    if char == "1":
+                        self.walls.append(vec(x_index, y_index))
+
+
 
     def draw_grid(self):
         # CONSIDERING THE SCREEN IS DIVIDED INTO 28 PARTS HORIZONTALLY
+        # SO THIS MADE OUR MAZE DIVIDED INTO A 28 X 30 MATRIX
+        # CONSISTING OF WALLS AND OPEN PATH.
         for x in range(WIDTH//self.cell_width):
             # FUNCTION TO DRAW A LINE
             # ARGS : SCREEN, COLOR OF LINE, STARTING AND ENDPOINTS
@@ -90,8 +105,14 @@ class App:
             # HERE SCREEN REFERS TO THE MAZE BACKGROUND
             pygame.draw.line(self.background, GREY, (0, x * self.cell_height), (WIDTH,x*self.cell_height) )
 
-        # SO THIS MADE OUR MAZE DIVIDED INTO A 28 X 30 MATRIX
-        # CONSISTING OF WALLS AND OPEN PATH.
+
+        # VISUALIZE THE WALLS ADDED FROM THE WALLS TEXT FILE
+        for wall in self.walls:
+            # DRAW AN OPAQUE RECTANGLE AT EVERY CORRDINATE OF THE WALL
+            pygame.draw.rect(
+                self.background, GREY, 
+                (wall.x * self.cell_width, wall.y * self.cell_height, self.cell_width, self.cell_height)
+            )
 
 
 ############################## INTRO FUNCTIONS ##########################
