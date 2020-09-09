@@ -131,13 +131,42 @@ class App:
 
     def playing_events(self):
         for event in pygame.event.get():
+            
             # IF EVENT QUIT THEN STOP THE GAME
             if event.type == pygame.QUIT:
                 self.running = False
 
+            # FOR THE ARROW KEY PRESS EVENT
+            if event.type == pygame.KEYDOWN:
+                # IF LEFT ARROW IS PRESSED 
+                if event.key == pygame.K_LEFT:
+                    # PASSING A VEC(-1,0)
+                    # RESEMBLING MOVEMENT TO LEFT FROM ORIGIN
+                    self.player.move(vec(-1,0))
+
+                # IF LEFT ARROW IS PRESSED 
+                if event.key == pygame.K_RIGHT:
+                    # PASSING A VEC(1,0)
+                    # RESEMBLING MOVEMENT TO RIGHT FROM ORIGIN                    
+                    self.player.move(vec(1,0))
+
+                # IF UP ARROW IS PRESSED                 
+                if event.key == pygame.K_UP:
+                    # PASSING A VEC(0,-1)
+                    # RESEMBLING MOVEMENT TO UP FROM ORIGIN  
+                    # WHEN YOU G UP PIEL POSITION REDUCES
+                    # THUS, Y IS NEGATIVE                    
+                    self.player.move(vec(0,-1))
+
+                # IF DOWN ARROW IS PRESSED
+                if event.key == pygame.K_DOWN:
+                    # PASSING A VEC(0,1)
+                    # RESEMBLING MOVEMENT TO DOWN FROM ORIGIN                        
+                    self.player.move(vec(0,1))
+
     
     def playing_update(self):
-        pass
+        self.player.update()
 
     def playing_draw(self):
         # NEED T0 FILL THE SCREEN WITH BLACK
@@ -160,4 +189,6 @@ class App:
 
         # CONSTRUCT PLAYER ON THE MAZE SCREEN
         self.player.draw()
+
+
         pygame.display.update()
