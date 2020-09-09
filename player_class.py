@@ -13,12 +13,31 @@ class Player:
         self.grid_pos = pos
         self.pix_pos = self.get_pix_pos()
         self.direction = vec(1,0)
+        # IT WILL BE USED FOR KEEPING THE PAC
+        # INSIDE THE CENTER OF THE GRID MATRIX
         self.stored_direction = None
         # print(self.grid_pos, self.pix_pos)
 
 
     def update(self):
         self.pix_pos += self.direction 
+
+
+        # LOGIC FOR HOLDING THE PAC INTO THE CENTER OF A CELL BLOCK
+        # CURRENTLY IT IS A TEMPORARY SOLUTION
+        if int(self.pix_pos.x + TOP_BOTTOM_BUFFER//2) % self.app.cell_width == 0:
+            # print("X IS IN LINE")
+            if self.direction == vec(1,0) or self.direction == vec(-1,0):
+                if self.stored_direction != None:
+                    self.direction = self.stored_direction
+
+        if int(self.pix_pos.y + TOP_BOTTOM_BUFFER//2) % self.app.cell_height == 0:
+            # print("X IS IN LINE") 
+            if self.direction == vec(0,1) or self.direction == vec(0,-1):
+                if self.stored_direction != None:
+                    self.direction = self.stored_direction
+
+
 
         # FOR THE RED GRIP MOVEMENT
         self.grid_pos[0] = (self.pix_pos[0] - TOP_BOTTOM_BUFFER + self.app.cell_width//2)// self.app.cell_width + 1
@@ -42,8 +61,10 @@ class Player:
         ), 1)
 
     def move(self, direction):
-        self.direction = direction
-        
+        #self.direction = direction
+        # ABOVE LINE REPLACED BY :
+        # IT IS TO KEEP THE PAC IN RIGHT AND ACCURATE PATH
+        self.stored_direction = direction
 
 
     def get_pix_pos(self):
@@ -62,14 +83,3 @@ class Player:
 
 
 
-        # self.pix_pos += self.direction 
-        # if self.pix_pos.x + TOP_BOTTOM_BUFFER//2 % self.app.cell_width == 0:
-        #     # print("X IS IN LINE")
-        #     if self.direction == vec(1,0) or self.direction == vec(-1,0):
-        #         if self.stored_direction != None:
-        #             self.direction = self.stored_direction
-        # if self.pix_pos.y + TOP_BOTTOM_BUFFER//2 % self.app.cell_height == 0:
-        #     # print("X IS IN LINE")
-        #     if self.direction == vec(0,1) or self.direction == vec(0,-1):
-        #         if self.stored_direction != None:
-        #             self.direction = self.stored_direction
