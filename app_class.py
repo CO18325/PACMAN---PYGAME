@@ -10,33 +10,44 @@ vec = pygame.math.Vector2
 class App:
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        
         # CLOCK TO CONTROL THE FRAMES PER SECOND
         self.clock = pygame.time.Clock()
         self.running = True
         self.state = 'start'
 
+        
         # CONSIERING 28 PART HORIZONTALLY OF THE SCREEN
         self.cell_width = MAZE_WIDTH//28
+        
         # CONSIERING 30 PART VERTICALLY OF THE SCREEN
         self.cell_height = MAZE_HEIGHT//30
+        
+        # INTIALIZING THE WALL ARRAY
+        self.walls = []
+        
+        # INTIALIZE THE COINS ARRAY
+        self.coins = []
+
+        # INITIAL POSITION OF THE PACMAN
+        # IN THE GRID OF THE MAZE
+        # SET IN THE LOAD FUNCTION
+        # BASED ON THE WALLS.TXT
+        self.p_pos = None
+        
+        # TO LOAD ALL THE IMAGES BEFORE STARTING THE GAME
+        # OTHERWISE THE IMAGES WILL LOAD FRAME BY FRAME
+        self.load()
 
         # INITIALIZE THE PLAYER(PACMAN)
         # ARGS : STARTING COORDINATES
         # PASS THE APP ITSELF
-        self.player = Player(self, PLAYER_START_POSITION)
-        
-        # INTIALIZING THE WALL ARRAY
-        self.walls = []
-
-        # INTIALIZE THE COINS ARRAY
-        self.coins = []
-
-
-
-        # TO LOAD ALL THE IMAGES BEFORE STARTING THE GAME
-        # OTHERWISE THE IMAGES WILL LOAD FRAME BY FRAME
-        self.load()
+        # INCE THE STARTING COORDINATES ARE PROVIDED IN THE LOAD FUNCTION
+        # THAN THE PLAYER CLASS IS INTITIALIZED AFTER CALLING THE RETURN FUNCTION
+        self.player = Player(self, self.p_pos)        
     
+
+
     def run(self):
         while self.running:
             if self.state == 'start':
@@ -93,10 +104,17 @@ class App:
                     if char == "1":
                         self.walls.append(vec(x_index, y_index))
                     elif char == "C":
-                        # IF CHAR EQUAL TO 1
-                        # IT REFERS TO A WALL
-                        # APPEND IT TO THE WALL LIST
+                        # IF CHAR EQUAL TO 2
+                        # IT REFERS TO A COIN
+                        # APPEND IT TO THE COINT LIST
                         self.coins.append(vec(x_index, y_index))
+                    elif char == "P":
+                        # IF CHAR EQUALS TO P THEN
+                        # IT REFERS TO THE START POSITION OF THE PACMAN
+                        # MARK THIS POSITION AS THE STARTING POINT
+                        self.p_pos = vec(x_index, y_index)
+                        # PLAYER_START_POSITION = vec(x_index, y_index)
+
 
 
     def draw_grid(self):
