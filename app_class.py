@@ -28,6 +28,10 @@ class App:
         # INTIALIZING THE WALL ARRAY
         self.walls = []
 
+        # INTIALIZE THE COINS ARRAY
+        self.coins = []
+
+
 
         # TO LOAD ALL THE IMAGES BEFORE STARTING THE GAME
         # OTHERWISE THE IMAGES WILL LOAD FRAME BY FRAME
@@ -83,9 +87,16 @@ class App:
         with open("walls.txt", 'r') as file:
             for y_index, line in enumerate(file):
                 for x_index, char in enumerate(line):
+                    # IF CHAR EQUAL TO 1
+                    # IT REFERS TO A WALL
+                    # APPEND IT TO THE WALL LIST
                     if char == "1":
                         self.walls.append(vec(x_index, y_index))
-
+                    elif char == "C":
+                        # IF CHAR EQUAL TO 1
+                        # IT REFERS TO A WALL
+                        # APPEND IT TO THE WALL LIST
+                        self.coins.append(vec(x_index, y_index))
 
 
     def draw_grid(self):
@@ -114,6 +125,18 @@ class App:
                 (wall.x * self.cell_width, wall.y * self.cell_height, self.cell_width, self.cell_height)
             )
 
+        # # VISUALIZE THE COINS ADDED FROM THE WALLS TEXT FILE
+        # for coin in self.coins:
+        #     # DRAW AN OPAQUE RECTANGLE AT EVERY CORRDINATE OF THE COIN
+        #     pygame.draw.rect(
+        #         self.background, ORANGE, 
+        #         (
+        #             coin.x * self.cell_width, 
+        #             coin.y * self.cell_height, 
+        #             self.cell_width, 
+        #             self.cell_height
+        #         )
+        #     )
 
 ############################## INTRO FUNCTIONS ##########################
 
@@ -193,10 +216,18 @@ class App:
         # NEED T0 FILL THE SCREEN WITH BLACK
         # SO THAT PREVIOUS WINDOW CONTENT IS FLUSHED OUT
         self.screen.fill(BLACK)
+
+
+
         # REPRESENT PLAYING ARENA SCREEN WITH THE MAZE IMAGE AT BACKGROUND
         # WE STARTED THE BAKGROUND FROM (TOP_BOTTOM_BUFFER//2,TOP_BOTTOM_BUFFER//2) PIXEL
         # TO CENTER THE MAZE IMAGE IN THE GAME WINDOW
         self.screen.blit(self.background, (TOP_BOTTOM_BUFFER//2, TOP_BOTTOM_BUFFER//2))
+       
+       
+        # FUNCTION TO SHOW THE COINS
+        self.draw_coins()
+
 
         # FUNCTION TO SHOW GRID LINES ON THE MAZE
         # TO UNDERSTAND HOW THE PACMAN WILL MOVE
@@ -206,10 +237,23 @@ class App:
         self.draw_text('HIGH SCORE : 000', self.screen, [30,5], 18, WHITE, START_FONT, centered=False)
 
         # TO SHOW THE CURRENT SCORE IN THE GAME PLAYING AREA
-        self.draw_text('CURRENT SCORE : 000', self.screen, [420,5], 18, WHITE, START_FONT, centered=False)
+        self.draw_text('CURRENT SCORE : {}'.format(self.player.current_score), self.screen, [420,5], 18, WHITE, START_FONT, centered=False)
 
         # CONSTRUCT PLAYER ON THE MAZE SCREEN
         self.player.draw()
 
 
         pygame.display.update()
+
+
+    def draw_coins(self):
+        for coin in self.coins:
+            pygame.draw.circle(
+                self.screen,
+                ORANGE,
+                (
+                    int(coin.x * self.cell_width) + self.cell_width//2 + TOP_BOTTOM_BUFFER//2,
+                    int(coin.y * self.cell_height) + self.cell_height//2 + TOP_BOTTOM_BUFFER//2
+                ),
+                5
+            )

@@ -29,6 +29,12 @@ class Player:
         # IT WILL BE INTIALLY TRUE
         self.able_to_move = True
 
+        # VARIABLE TO STORE THE CURRENT SCORE
+        # THIS SCORE WILL INCREMENT ON THE 
+        # COSUMPTION OF THE COINS IN THE MAZE
+        # INTIALLY IT WILL BE ZERO
+        self.current_score = 0
+
 
 
     # METHOD TO GET THE EXACT CELL BLOCK POSITION IN THE GRID MATRIX
@@ -68,7 +74,12 @@ class Player:
 
                 # CHECK IF THERE IS ANY WALL IN THE NEXT MOVE
                 self.able_to_move = self.can_move()
-                
+        
+        # METHOD TO EAT THE COIN IF THE 
+        # PACMAN IS AT THE GRID POSITION OF THE COIN
+        # AND THUS, INCREMENT THE SCORE
+        if self.on_coin():
+            self.eat_coin()        
 
 
 
@@ -92,6 +103,24 @@ class Player:
             self.grid_pos[1] * self.app.cell_height + TOP_BOTTOM_BUFFER//2, 
             self.app.cell_width, self.app.cell_height
         ), 1)
+
+
+    # METHOD TO IDENTIFY IF GRID POSITION
+    # OF THE PACMAN IS CONTAINING A COIN
+    def on_coin(self):
+        if self.grid_pos in self.app.coins:
+            return True
+
+        return False
+    
+
+    # METHOD TO EAT THE COIN
+    # I.E TO INCREMENT THE CURRENT SCORE AND
+    # REMOVE THE CORRESPONDING COIN FROM THE MAZE 
+    def eat_coin(self):
+        self.app.coins.remove(self.grid_pos)
+        self.current_score += 10
+
 
 
     # FUNCTION TO STORE THE DIRECTION GIVEN 
