@@ -130,15 +130,16 @@ class App:
                         # THAN THE CHAR REFERS TO THE STARTING POSTION
                         # OF ANY ONE OF THE ENEMIES
                         self.e_pos.append(vec(x_index, y_index))
+                    
 
 
 
     # METHOD TO INTIALIZE A ENEMY OBJECT
     # FROM THE ENEMY CLASS DEFINED IN ENEMY_CLASS.PY
-    # ARGS : APP CLASS VARIABLE, STARTING POSITION OF THE ENMEY
+    # ARGS : APP CLASS VARIABLE, STARTING POSITION OF THE ENEMY
     def create_enemies(self):
-        for pos in self.e_pos:
-            self.enemies.append(Enemy(self, pos))
+        for index, pos in enumerate(self.e_pos):
+            self.enemies.append(Enemy(self, pos, index))
 
 
     def draw_grid(self):

@@ -16,11 +16,14 @@ class Player:
     def __init__(self, app, pos):
         self.app = app
 
-        # UNDERSTAND THESE GRID AND PIXEL POSITIONS IN DETAIL LATER
-        # ALSO NEED TO UNDERSTAND Vector2 OF PYGAME LIBRARY
+        # GRID POSITION 
         self.grid_pos = pos
+        # PIXEL POSITION IE CELL BLOCK POSITION
         self.pix_pos = self.get_pix_pos()
+
+        # DIRECTION VARIABLE
         self.direction = vec(1,0)
+
         # IT WILL BE USED FOR KEEPING THE PAC
         # INSIDE THE CENTER OF THE GRID MATRIX
         self.stored_direction = None
@@ -34,6 +37,12 @@ class Player:
         # COSUMPTION OF THE COINS IN THE MAZE
         # INTIALLY IT WILL BE ZERO
         self.current_score = 0
+
+        # VARIABLE TO SET THE SPEED
+        # BY DEFAULT SPEED IS 1 
+        # HIGHER SPEED(5 TIMES) DOESN'T WORK VERY WELL WITH 
+        # THE COLLISION DETECTION SYSTEM WRT WALL
+        self.speed = 2
 
 
 
@@ -53,7 +62,8 @@ class Player:
         if self.able_to_move :
             # UPDATING THE POSITION OF THE PAC 
             # ACCORDING TO THE DIRECTION GIVEN
-            self.pix_pos += self.direction 
+            # AND MOVE ACCORDING TO THE SPECIFIED SPEED
+            self.pix_pos += self.direction * self.speed 
 
 
         # LOGIC FOR HOLDING THE PAC INTO THE CENTER OF A CELL BLOCK
