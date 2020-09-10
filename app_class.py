@@ -1,6 +1,7 @@
 import pygame
 from setting import *
 from player_class import *
+from enemy_class import *
 import sys
 
 pygame.init()
@@ -29,6 +30,13 @@ class App:
         # INTIALIZE THE COINS ARRAY
         self.coins = []
 
+        # INTIALIZE A LIST OF ENIMIES
+        self.enemies = []
+
+        # INTILIZE THE LIST OF STARTING POSITION
+        # OF ALL THE FOUR ENEMIES
+        self.e_pos = []
+
         # INITIAL POSITION OF THE PACMAN
         # IN THE GRID OF THE MAZE
         # SET IN THE LOAD FUNCTION
@@ -44,7 +52,10 @@ class App:
         # PASS THE APP ITSELF
         # INCE THE STARTING COORDINATES ARE PROVIDED IN THE LOAD FUNCTION
         # THAN THE PLAYER CLASS IS INTITIALIZED AFTER CALLING THE RETURN FUNCTION
-        self.player = Player(self, self.p_pos)        
+        self.player = Player(self, self.p_pos)   
+
+        # FUNCTION TO CREATE THE ENEMIES
+        self.create_enemies()     
     
 
 
@@ -114,7 +125,20 @@ class App:
                         # MARK THIS POSITION AS THE STARTING POINT
                         self.p_pos = vec(x_index, y_index)
                         # PLAYER_START_POSITION = vec(x_index, y_index)
+                    elif char in ["2","3","4","5"]:
+                        # IF CHAR IS THIS LIST
+                        # THAN THE CHAR REFERS TO THE STARTING POSTION
+                        # OF ANY ONE OF THE ENEMIES
+                        self.e_pos.append(vec(x_index, y_index))
 
+
+
+    # METHOD TO INTIALIZE A ENEMY OBJECT
+    # FROM THE ENEMY CLASS DEFINED IN ENEMY_CLASS.PY
+    # ARGS : APP CLASS VARIABLE, STARTING POSITION OF THE ENMEY
+    def create_enemies(self):
+        for pos in self.e_pos:
+            self.enemies.append(Enemy(self, pos))
 
 
     def draw_grid(self):
@@ -228,7 +252,14 @@ class App:
 
     
     def playing_update(self):
+
+        # UPDATING THE PLAYER ON THE MAZE SCREEN
         self.player.update()
+
+       # UPDATING ALL THE ENEMIES ON THE MAZE SCREEN
+        for enemy in self.enemies:
+            enemy.update()
+
 
     def playing_draw(self):
         # NEED T0 FILL THE SCREEN WITH BLACK
@@ -260,6 +291,9 @@ class App:
         # CONSTRUCT PLAYER ON THE MAZE SCREEN
         self.player.draw()
 
+        # CONSTRUCT ALL THE ENEMIES ON THE MAZE SCREEN
+        for enemy in self.enemies:
+            enemy.draw()
 
         pygame.display.update()
 
