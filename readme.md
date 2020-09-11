@@ -104,9 +104,9 @@ Thus, it helps to identify the Walls. For every movement in any direction first 
 ## GAME PREVIEW
 
 <br>
-<img src="main_scr.JPG" width=25% height=80%>
-<img src="game_scr.JPG" width=25% height=80%>
-<img src="end_scr.JPG" width=25% height=80%>
+<img src="main_scr.JPG" width=20% height=80%>
+<img src="game_scr.JPG" width=20% height=80%>
+<img src="end_scr.JPG" width=20% height=80%>
 
 <br><hr>
 
