@@ -63,6 +63,8 @@ class App:
 
 
     def run(self):
+        
+        # LOOP UNTIL GAME IS RUNNING
         while self.running:
             if self.state == 'start':
                 self.start_events()
@@ -72,10 +74,17 @@ class App:
                 self.playing_events()
                 self.playing_update()
                 self.playing_draw() 
+            elif self.state == 'game over':
+                self.game_over_events()
+                self.game_over_update()
+                self.game_over_draw()                 
             else:
                 self.running = False
 
             self.clock.tick(FPS)
+        
+        
+        
         pygame.quit()
         sys.exit()
 
@@ -132,7 +141,7 @@ class App:
                         # IF CHAR IS THIS LIST
                         # THAN THE CHAR REFERS TO THE STARTING POSTION
                         # OF ANY ONE OF THE ENEMIES
-                        self.e_pos.append(vec(x_index, y_index))
+                        self.e_pos.append([x_index, y_index])
                     
 
 
@@ -142,7 +151,7 @@ class App:
     # ARGS : APP CLASS VARIABLE, STARTING POSITION OF THE ENEMY
     def create_enemies(self):
         for index, pos in enumerate(self.e_pos):
-            self.enemies.append(Enemy(self, pos, index))
+            self.enemies.append(Enemy(self, vec(pos), index))
 
 
     def draw_grid(self):
@@ -183,6 +192,27 @@ class App:
         #             self.cell_height
         #         )
         #     )
+
+
+    def reset(self):
+        self.player.lives = PLAYER_LIVES + 1
+        self.coins = []
+        
+        self.player.current_score = 0
+        with open("walls.txt", 'r') as file:
+            for y_index, line in enumerate(file):
+                for x_index, char in enumerate(line):
+                    if char == "C":
+                        # IF CHAR EQUAL TO 2
+                        # IT REFERS TO A COIN
+                        # APPEND IT TO THE COINT LIST
+                        self.coins.append(vec(x_index, y_index))
+        
+        self.state = 'start'
+
+        
+
+
 
 ############################## INTRO FUNCTIONS ##########################
 
@@ -331,6 +361,11 @@ class App:
             # I.E MAKE IT STATIONARY AT THE RESET POSITION
             self.player.direction *= 0
 
+            for enemy in self.enemies:
+                enemy.grid_pos = vec(enemy.starting_pos)
+                enemy.pix_pos = enemy.get_pix_pos()
+                enemy.direction *= 0
+
 
 
 
@@ -347,3 +382,35 @@ class App:
             )
 
     
+
+
+################################# GAME OVER FUNCTIONS #########################################
+
+    def game_over_events(self):
+        for event in pygame.event.get():
+            # IF EVENT QUIT THEN STOP THE GAME
+            if event.type == pygame.QUIT:
+                self.running = False
+            # IF SPACEBAR IS PRESSED THEN GAME IS STARTED
+            # I.E. THE MODE IS SET TO PLAYING 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                self.reset()
+                
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                self.running = False
+            
+
+    
+    def game_over_update(self):
+        pass
+    
+    def game_over_draw(self):
+        self.screen.fill(BLACK)
+        self.draw_text('GAME OVER', self.screen,[WIDTH//2,100], 36, RED, START_FONT,centered = True)
+        self.draw_text('PRESS SPACE TO PLAY AGAIN OR ESCAPE TO QUIT', self.screen,[WIDTH//2,200], START_TEXT_SIZE, WHITE, START_FONT, centered = True)
+        self.draw_text('THANK YOU!!!', self.screen,[WIDTH//2,300], 36, RED, START_FONT,centered = True)
+        self.draw_text('CAPIP INNOVATIONS', self.screen,[WIDTH//2,HEIGHT//2 + 100], START_TEXT_SIZE, SKYBLUE, START_FONT, centered = True)
+        self.draw_text('INDERPREET SINGH', self.screen,[WIDTH//2,HEIGHT//2 + 150], START_TEXT_SIZE, SKYBLUE, START_FONT, centered = True)
+        self.draw_text('ROLL NUMBER : CO18325', self.screen,[WIDTH//2,HEIGHT//2 + 200], START_TEXT_SIZE, SKYBLUE, START_FONT, centered = True)
+                
+        pygame.display.update()

@@ -11,6 +11,8 @@ class Enemy:
         self.app = app
         # POSITION ON THE WINDOW
         self.grid_pos = pos
+        # STARTING POSITION
+        self.starting_pos = [pos.x,pos.y]
         # CELL BLOCK POSITION IN THE MAZE
         self.pix_pos = self.get_pix_pos()
         # DEFINES WHICH TYPE OF PERSONALITY THE ENEMY COMPRISES
