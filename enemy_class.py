@@ -18,7 +18,7 @@ class Enemy:
         # DEFINE COLOR FOR DIFFERENT TYPES OF ENEMY
         self.color = self.set_color()
         # DIRECTION VARIABLE FOR THE ENEMY MOVEMENT
-        self.direction = vec(0,-1)
+        self.direction = vec(0,0)
         # DEFINE THE ENEMY PERSONALITY 
         self.personality = self.set_personality()
         # SPEED VARIABLE FOR THE ENEMY OBJECTS
@@ -60,12 +60,12 @@ class Enemy:
         # CURRENTLY IT IS A TEMPORARY SOLUTION
         if int(self.pix_pos.x + TOP_BOTTOM_BUFFER//2) % self.app.cell_width == 0:
             # print("X IS IN LINE")
-            if self.direction == vec(1,0) or self.direction == vec(-1,0):
+            if self.direction == vec(1,0) or self.direction == vec(-1,0) or self.direction == vec(0,0):
                 return True
 
         if int(self.pix_pos.y + TOP_BOTTOM_BUFFER//2) % self.app.cell_height == 0:
             # print("X IS IN LINE") 
-            if self.direction == vec(0,1) or self.direction == vec(0,-1):
+            if self.direction == vec(0,1) or self.direction == vec(0,-1) or self.direction == vec(0,0):
                 return True
 
 

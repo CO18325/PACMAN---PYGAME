@@ -17,12 +17,14 @@ class Player:
         self.app = app
 
         # GRID POSITION 
-        self.grid_pos = pos
+        # INTIALIZED WITH THE INTIAL COORDINATES OF THE PAC
+        # PASSED FROM THE APP CLASS
+        self.grid_pos = vec(pos[0],pos[1])
         # PIXEL POSITION IE CELL BLOCK POSITION
         self.pix_pos = self.get_pix_pos()
 
-        # DIRECTION VARIABLE
-        self.direction = vec(1,0)
+        # INTIALIZE THE DIRECTION VARIABLE
+        self.direction = vec(0,0)
 
         # IT WILL BE USED FOR KEEPING THE PAC
         # INSIDE THE CENTER OF THE GRID MATRIX
@@ -43,6 +45,10 @@ class Player:
         # HIGHER SPEED(5 TIMES) DOESN'T WORK VERY WELL WITH 
         # THE COLLISION DETECTION SYSTEM WRT WALL
         self.speed = 2
+
+        # NUMBER OF LIVES FOR THE PLAYER
+        self.lives = PLAYER_LIVES
+
 
 
 
@@ -70,7 +76,7 @@ class Player:
         # CURRENTLY IT IS A TEMPORARY SOLUTION
         if int(self.pix_pos.x + TOP_BOTTOM_BUFFER//2) % self.app.cell_width == 0:
             # print("X IS IN LINE")
-            if self.direction == vec(1,0) or self.direction == vec(-1,0):
+            if self.direction == vec(1,0) or self.direction == vec(-1,0 or self.direction == vec(0,0)):
                 if self.stored_direction != None:
                     self.direction = self.stored_direction
                 
@@ -78,7 +84,7 @@ class Player:
                 self.able_to_move = self.can_move()
         if int(self.pix_pos.y + TOP_BOTTOM_BUFFER//2) % self.app.cell_height == 0:
             # print("X IS IN LINE") 
-            if self.direction == vec(0,1) or self.direction == vec(0,-1):
+            if self.direction == vec(0,1) or self.direction == vec(0,-1) or self.direction == vec(0,0):
                 if self.stored_direction != None:
                     self.direction = self.stored_direction
 
@@ -113,6 +119,10 @@ class Player:
             self.grid_pos[1] * self.app.cell_height + TOP_BOTTOM_BUFFER//2, 
             self.app.cell_width, self.app.cell_height
         ), 1)
+
+        # DRAW THE LEFT LIVES OF THE PLAYER
+        for x in range(self.lives):
+            pygame.draw.circle(self.app.screen, PLAYER_COLOR, (30 + x*20, int(HEIGHT - 15)), 8)
 
 
     # METHOD TO IDENTIFY IF GRID POSITION

@@ -1,4 +1,5 @@
 import pygame
+import copy
 from setting import *
 from player_class import *
 from enemy_class import *
@@ -52,7 +53,9 @@ class App:
         # PASS THE APP ITSELF
         # INCE THE STARTING COORDINATES ARE PROVIDED IN THE LOAD FUNCTION
         # THAN THE PLAYER CLASS IS INTITIALIZED AFTER CALLING THE RETURN FUNCTION
-        self.player = Player(self, self.p_pos)   
+        # WE WILL BE PASSING THE COPY OF THE START POSITION
+        # JUST TO MAKE SURE THAT WE DO NOT CHENGE THE P_POS IN THE PLAYER CLASS 
+        self.player = Player(self, copy.copy(self.p_pos))   
 
         # FUNCTION TO CREATE THE ENEMIES
         self.create_enemies()     
@@ -123,7 +126,7 @@ class App:
                         # IF CHAR EQUALS TO P THEN
                         # IT REFERS TO THE START POSITION OF THE PACMAN
                         # MARK THIS POSITION AS THE STARTING POINT
-                        self.p_pos = vec(x_index, y_index)
+                        self.p_pos = [x_index, y_index]
                         # PLAYER_START_POSITION = vec(x_index, y_index)
                     elif char in ["2","3","4","5"]:
                         # IF CHAR IS THIS LIST
@@ -263,6 +266,16 @@ class App:
         for enemy in self.enemies:
             enemy.update()
 
+        # ON COLLISION OF A PACMAN AND THE GHOST
+        for enemy in self.enemies:
+            if enemy.grid_pos == self.player.grid_pos:
+                # METHOD TO REMOVE THE LIFE
+                self.remove_life()
+            
+
+
+
+
 
     def playing_draw(self):
         # NEED T0 FILL THE SCREEN WITH BLACK
@@ -301,6 +314,26 @@ class App:
         pygame.display.update()
 
 
+    # METHOD TO CREATE FUNCTIONALITY AFTER THE COLLISION
+    def remove_life(self):
+        # REDUCED THE LIFE
+        self.player.lives -= 1
+        # CHECK IF ALL THE LIVES ARE OVER OR NOT
+        if self.player.lives == 0:
+            self.state = "game over"
+        # IF NOT THEN RESET THE GAME OBJECTS
+        else:
+            # RESET THE GRID POSITION TO INTIAL POSITION AGAIN
+            self.player.grid_pos = vec(self.p_pos)
+            # RESET THE PIXEL POSITION ALSO
+            self.player.pix_pos = self.player.get_pix_pos()
+            # SET THE DIRECTION OF PAC TO ZERO
+            # I.E MAKE IT STATIONARY AT THE RESET POSITION
+            self.player.direction *= 0
+
+
+
+
     def draw_coins(self):
         for coin in self.coins:
             pygame.draw.circle(
@@ -312,3 +345,5 @@ class App:
                 ),
                 5
             )
+
+    
