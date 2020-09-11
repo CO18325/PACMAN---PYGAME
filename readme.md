@@ -26,7 +26,7 @@ Pac-Man is a maze arcade game developed and released by **Namco** in 1980. The p
 
 **Push Down Automate** is used to design the Pacman game by utilizing a finite-state machine with a stack to store the inputs such that the system can memorize. **It is observed that there exists a correlation between the given inputs and the expected outcomes.** Therefore, PDA is considered a helping tool to explain the story and business process of a game. Moreover, PDA extremely helps the coding procedure to be more systematic and organized<br><br>
 <center>
-<img src="pda.jpg" width=60% height=60% /><br>
+<img src="pda.JPG" width=60% height=60% /><br>
 </center>
 
 </p>
@@ -97,16 +97,16 @@ Thus, it helps to identify the Walls. For every movement in any direction first 
 <hr>
 <br>
 <center>
-<img src="black_box_testing.jpg" width=60% height=60%>
+<img src="black_box_testing.JPG" width=60% height=60%>
 </center>
 <br><br>
 
 ## GAME PREVIEW
 <hr>
 <br>
-<img src="main_scr.jpg" width=30% height=80%>
-<img src="game_scr.jpg" width=30% height=80%>
-<img src="end_scr.jpg" width=30% height=80%>
+<img src="main_scr.JPG" width=30% height=80%>
+<img src="game_scr.JPG" width=30% height=80%>
+<img src="end_scr.JPG" width=30% height=80%>
 
 <br><hr>
 
