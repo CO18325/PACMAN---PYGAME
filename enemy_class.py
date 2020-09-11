@@ -21,12 +21,20 @@ class Enemy:
         self.direction = vec(0,-1)
         # DEFINE THE ENEMY PERSONALITY 
         self.personality = self.set_personality()
+        # SPEED VARIABLE FOR THE ENEMY OBJECTS
+        # SET TO 1 JUST TO INTIALIZE, 
+        # WILL CHANGE AT THE TIME OF PERSONALITY SELECTION
+        self.speed = 1 
+
 
     def update(self):
-        self.pix_pos += self.direction
 
-        if self.time_to_move():
-            self.move()
+        if self.app.player.grid_pos != self.grid_pos:
+
+            self.pix_pos += self.direction * self.speed
+
+            if self.time_to_move():
+                self.move()
 
 
         # SETTING GRID POSITION IN REFERENCE TO THE PIXEL POSTION
@@ -64,7 +72,89 @@ class Enemy:
     def move(self):
         if self.personality == "random":
             self.direction = self.get_random_direction()
+        
+        if self.personality == "speedy":
+            self.direction = self.get_path_direction()
 
+
+    # METHOD T SET PATH FOR INTELLIGENT ENEMY
+    def get_path_direction(self):
+        next_cell = self.find_next_cell_in_path()
+        x_dir = next_cell[0] - self.grid_pos[0]
+        y_dir = next_cell[1] - self.grid_pos[1]
+        return vec(x_dir, y_dir)
+
+
+    # METHOD TO FINC THE DIRECTION FOR THE INTELLIGIENT GHOST
+    # IT USES THE BREADTH FIRST SEARCH ALGORITHM 
+    # TO HELP THE ENEMY TO GET CLOSER TO THE PAC
+    def find_next_cell_in_path(self):
+        # CALL THE BFS METHOD
+        # ARGUMENTS :
+        #       STARTING POSITION (I.E ENEMY POSITION)
+        #       TARGET POSITION (I.E PAC POSITION)
+        path = self.BFS(
+                [int(self.grid_pos.x), int(self.grid_pos.y)],
+                [int(self.app.player.grid_pos.x), int(self.app.player.grid_pos.y)] 
+            )
+
+        return path[1]
+        
+
+    def BFS(self, start, target):
+
+        # GRID RESEMEBLING OUR GAME MAZE
+        grid = [[0 for x in range(28)] for x in range(30)]
+
+        # ADD THE WALL POSITIONS IN THIS GRID
+        for cell in self.app.walls:
+            if cell.x < 28 and cell.y <30:
+                grid[int(cell.y)][int(cell.x)] = 1
+            
+        # INTIATE THE BFS QUEUE
+        queue = [start]
+        # TO STORE THE PATHH
+        path = []
+        # TO STORE THE CELLS WHICH ARE VISITED
+        visited = []
+
+        # LOOP UNTIL THE QUEUE IS NOT EMPTY
+        while True:
+            # CURRENT SOURCE
+            current = queue[0]
+            # POPPED THE CURRENT SOURCE FROM THE IMPLEMENTATION QUEUE
+            queue.remove(queue[0])
+            # MARK THE CELL AS VISITED
+            visited.append(current)
+
+            if current == target:
+                break
+            else:
+                neighbours = [[0, -1], [1, 0], [0, 1], [-1, 0]]
+                for neighbour in neighbours:
+                    if neighbour[0] + current[0] >= 0 and neighbour[0] + current[0] < len(grid[0]):
+                       if neighbour[1] + current[1] >= 0 and neighbour[1] + current[1] < len(grid):
+                            next_cell = [neighbour[0] + current[0], neighbour[1] + current[1]]
+                            if next_cell not in visited:
+                                if grid[next_cell[1]][next_cell[0]] != 1:
+                                    queue.append(next_cell)
+                                    path.append({"Current": current, "Next": next_cell})
+                                    
+        shortest = [target]
+        while target != start:
+            for step in path:
+                if step["Next"] == target:
+                    target = step["Current"]
+                    shortest.insert(0, step["Current"])
+                                
+        return shortest
+
+
+
+
+
+
+    # GET THE DIRECTION FOR THE RANDOM ENEMY
     def get_random_direction(self):
         # LOOP TO MAKE SURE THAT 
         # EVEN IF THE GHOST HIT A WALL
@@ -83,6 +173,8 @@ class Enemy:
             
             next_pos = vec(self.grid_pos.x + x_dir, self.grid_pos.y + y_dir)
 
+            # IF NEXT CELL DUE TO RANDOM IS NOT A WALL 
+            # BREAK FROM THE LOOP AND RETURN THE PIXEL POSITION
             if next_pos not in self.app.walls:
                 break
 
@@ -106,18 +198,22 @@ class Enemy:
     # METHOD TO SET THE COLOR OF THE ENEMY
     # BASED ON THE NUMBER ASSIGNED TO IT
     def set_color(self):
-        if self.number == 0 or self.number == 3:
+        if self.number == 0 or self.number == 1:
             return RED
-        elif self.number == 1 or self.number == 2:
+        elif self.number == 2 or self.number == 3:
             return SKYBLUE
 
 
     # METHOD TO SET THE PERSONALITY OF THE ENEMY 
     # BASED ON THE NUMBER ASSIGNED TO IT
     def set_personality(self):
-        if self.number == 0 or self.number == 3:
+        if self.number == 0 or self.number == 1:
             # ENEMY 0 AND 3 WILL CONSIST OF SPEEDY AND DIRECTED MOVEMENT
+            # DIRECTED ENEMY WILL HAVE NORMAL/SLOW SPEED
+            self.speed = 1
             return "speedy"
-        elif self.number == 1 or self.number == 2:
+        elif self.number == 3 or self.number == 2:
             # ENEMY 1 AND 2 WILL CONSIST OF RANDOM MOVEMENT
+            # RANDOM ONE WILL BE THE FASTER ONES
+            self.speed = 2
             return "random"

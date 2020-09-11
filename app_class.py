@@ -204,12 +204,14 @@ class App:
 
         # HELPER FUNCTION TO DRAW TEXT ON THE PASSED SCREEN
         # ARGS : TEXT, SCREEN, POSITION OF TEXT, TEXT SIZE, COLOR OF TEXT, FONT OF TEXT, CENTERED 
-        self.draw_text('HIGH SCORE', self.screen,[5,10], START_TEXT_SIZE, WHITE, START_FONT,centered = False)
+        self.draw_text('HIGH SCORE : 9999', self.screen,[5,10], START_TEXT_SIZE, WHITE, START_FONT,centered = False)
 
 
         self.draw_text('PUSH SPACEBAR', self.screen,[WIDTH//2,HEIGHT//2 - 50], START_TEXT_SIZE, ORANGE, START_FONT,centered = True)
         self.draw_text('1 PLAYER ONLY', self.screen,[WIDTH//2,HEIGHT//2 + 50], START_TEXT_SIZE, WHITE, START_FONT, centered = True)
         self.draw_text('CAPIP INNOVATIONS', self.screen,[WIDTH//2,HEIGHT//2 + 100], START_TEXT_SIZE, SKYBLUE, START_FONT, centered = True)
+        self.draw_text('INDERPREET SINGH', self.screen,[WIDTH//2,HEIGHT//2 + 150], START_TEXT_SIZE, SKYBLUE, START_FONT, centered = True)
+        self.draw_text('ROLL NUMBER : CO18325', self.screen,[WIDTH//2,HEIGHT//2 + 200], START_TEXT_SIZE, SKYBLUE, START_FONT, centered = True)
         
         pygame.display.update()
 
@@ -284,7 +286,7 @@ class App:
         self.draw_grid()
 
         # TO SHOW THE HIGH SCORE IN THE GAME PLAYING AREA
-        self.draw_text('HIGH SCORE : 000', self.screen, [30,5], 18, WHITE, START_FONT, centered=False)
+        self.draw_text('HIGH SCORE : 9999', self.screen, [30,5], 18, WHITE, START_FONT, centered=False)
 
         # TO SHOW THE CURRENT SCORE IN THE GAME PLAYING AREA
         self.draw_text('CURRENT SCORE : {}'.format(self.player.current_score), self.screen, [420,5], 18, WHITE, START_FONT, centered=False)
