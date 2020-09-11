@@ -33,7 +33,7 @@ Pac-Man is a maze arcade game developed and released by **Namco** in 1980. The p
 <br>
 
 ## PACMAN'S BEHAVIOUR
-<hr>
+
 <p>
 
 1.	**INITIATE THE GAME**: This is the beginning of the game, including load the various objects:
@@ -50,7 +50,7 @@ Pac-Man is a maze arcade game developed and released by **Namco** in 1980. The p
 </p>
 
 ## GHOST’S  BEHAVIOUR
-<hr>
+
 
 <p>
 
@@ -63,7 +63,7 @@ Pac-Man is a maze arcade game developed and released by **Namco** in 1980. The p
 </p>
 
 ## INTELLIGENT GHOST SYSTEM
-<hr>
+
 
 <p>
 
@@ -76,7 +76,7 @@ Pac-Man is a maze arcade game developed and released by **Namco** in 1980. The p
 </p>
 
 ## WALL SYSTEM
-<hr>
+
 
 <p>
 There is no as such walls that can be identified by the Pac or the Ghosts. So, I have constructed a grid in which different symbols represent different objects:
@@ -94,7 +94,7 @@ Thus, it helps to identify the Walls. For every movement in any direction first 
 
 
 ## BLACK BOX TESTING
-<hr>
+
 <br>
 <center>
 <img src="black_box_testing.JPG" width=60% height=60%>
@@ -102,11 +102,11 @@ Thus, it helps to identify the Walls. For every movement in any direction first 
 <br><br>
 
 ## GAME PREVIEW
-<hr>
+
 <br>
-<img src="main_scr.JPG" width=30% height=80%>
-<img src="game_scr.JPG" width=30% height=80%>
-<img src="end_scr.JPG" width=30% height=80%>
+<img src="main_scr.JPG" width=25% height=80%>
+<img src="game_scr.JPG" width=25% height=80%>
+<img src="end_scr.JPG" width=25% height=80%>
 
 <br><hr>
 
