@@ -107,6 +107,7 @@ Thus, it helps to identify the Walls. For every movement in any direction first 
 <img src="game_scr.JPG" width=75% height=80%>
 <img src="end_scr.JPG" width=75% height=80%>
 
+
 <br><hr>
 
 
